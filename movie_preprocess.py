@@ -1,5 +1,4 @@
 import pandas as pd
-import requests
 
 movies_df = pd.read_csv("app/data/movies.csv")
 print(movies_df)
@@ -16,3 +15,35 @@ def add_url(row):
 
 merged_df['url'] = merged_df['imdbId'].apply(lambda x:add_url(x))
 print(merged_df)
+
+rating_df = pd.read_csv("app/data/ratings.csv")
+rating_df['movieId'] = rating_df['movieId'].astype(str)
+agg_df = rating_df.groupby('movieId').agg(rcount = ('rating', 'count'), rmean=('rating', 'mean'))
+
+print(agg_df)
+
+merged_df = merged_df.merge(agg_df, on='movieId')
+print('merged_df')
+print(merged_df.columns)
+
+# Step4 포스터 경로 추가
+
+import requests
+from tqdm import tqdm
+
+def add_poster(df):
+        for i, row in tqdm(df.iterrows(), total=df.shape[0]):
+                tmdb_id = row['tmdbId']
+                tmdb_url = f"https://api.themoviedb.org/3/movie/8844?api_key=5e2377701626713f6ca97e8aa170f352&language=en-US"
+                result = requests.get(tmdb_url)
+                try:
+                        df.at[i, "poster_path"] = "https://image.tmdb.org/t/p/original" + result.json()['poster_path']
+                        print(df.at[i, "poster_path"])
+                except (TypeError, KeyError) as e:
+                        df.at[i, "poster_path"] = "https://image.tmdb.org/t/p/original/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg"
+        return df
+
+merged_df['poster_path'] = None
+merged_df = add_poster(merged_df)
+print(merged_df.shape)
+merged_df.to_csv("app/data/movies_final.csv", index=None)
