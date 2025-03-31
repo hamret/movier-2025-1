@@ -1,13 +1,12 @@
 from fastapi import FastAPI
 import pandas as pd
 import uvicorn
-app = FastAPI()
 
-def random_items():
-    movies_df = pd.read_csv("app/data/movies_final.csv")
-    movies_df = movies_df.fillna('')
-    result_items = movies_df.sample(n=10).to_dict(orient='records')
-    return result_items
+from app.recommender import item_based_recommendation
+
+app = FastAPI()
+from resolver import random_items, random_genres_items, random_genres_items_best
+
 
 @app.get("/")
 async def root():
@@ -21,7 +20,17 @@ async def all_movies():
 
 @app.get("/genres/{genre}")
 async def genre_movies(genre: str):
-    return {"result": f'선택한 장르{genre}'}
+    result = random_genres_items(genre)
+    return {"result": result}
+
+@app.get("/genresbest/{genre}")
+async def genre_movies_best(genre: str):
+    result = random_genres_items_best(genre)
+    return {"result": result}
+@app.get("/item_based/{item_id}")
+async def item_based(item_id: str):
+    result = item_based_recommendation(item_id)
+    return {"result": result}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8080)
