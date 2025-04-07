@@ -13,18 +13,50 @@
 </head>
 
 <body>
-<div class = "p-5 bg-primary text-white text-center">
-<h1> Lee Daoll 첫 영화 추천 서비스</h1>
-
+<div class = "p-3 bg-primary text-white text-left">
+<h1> LD영화 추천 서비스</h1>
 </div>
-<h2>오늘의 영화 추천</h2>
+
+<h2 class="p-2 text-white text-left" style="background-color: darkslategray;">오늘의 영화</h2>
 
 <div id="alldiv"; style="column-count: 5;">
 
 
 </div>
 
-<h2>장르별 추천</h2>
+<h2 class="p-2 text-white text-left" style="background-color: darkslategray;">장르별 베스트 5</h2>
+<select name = "" id="sgenre"  style="padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f8f8; width: 200px;">
+    <option value="action">액션</option>
+    <option value="adventure">어드벤처</option>
+    <option value="animation">애니메이션</option>
+    <option value="children">아동</option>
+    <option value="comedy">코미디</option>
+    <option value="crime">범죄</option>
+    <option value="documentary">다큐멘터리</option>
+    <option value="drama">드라마</option>
+    <option value="fantasy">판타지</option>
+    <option value="film-noir">필름 누아르</option>
+    <option value="horror">호러</option>
+    <option value="imax">IMAX</option>
+    <option value="musical">뮤지컬</option>
+    <option value="mystery">미스터리</option>
+    <option value="romance">로맨스</option>
+    <option value="sci-fi">SF</option>
+    <option value="thriller">스릴러</option>
+    <option value="war">전쟁</option>
+    <option value="western">서부</option>
+</select>
+<button type="button" class="btn bg-primary btn-lg"
+onclick="MovieObject.getgenres()">장르선택</button>
+
+<div id="genrediv"; style="column-count: 5;"></div>
+
+
+
+<h2>영화 기반 추천</h2>
+<div id="itemdiv"; style="column-count: 5;"></div>
+<h2>사용자 기반 추천</h2>
+<div id="userdiv"; style="column-count: 5;"></div>
 
 
 </body>
