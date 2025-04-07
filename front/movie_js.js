@@ -2,7 +2,7 @@ let MovieObject = {
     init: function(){
         
     },
-
+//
     getall: function(){
         
         $.ajax({
