@@ -1,10 +1,21 @@
-from fastapi import FastAPI
-import pandas as pd
 import uvicorn
-
+from fastapi import FastAPI
+from starlette.middleware.cors import CORSMiddleware
 from app.recommender import item_based_recommendation
 
 app = FastAPI()
+origins = [
+    "*",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 from resolver import random_items, random_genres_items, random_genres_items_best
 
 
@@ -27,10 +38,11 @@ async def genre_movies(genre: str):
 async def genre_movies_best(genre: str):
     result = random_genres_items_best(genre)
     return {"result": result}
+
 @app.get("/item_based/{item_id}")
 async def item_based(item_id: str):
     result = item_based_recommendation(item_id)
     return {"result": result}
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8080)
+    uvicorn.run(app, host="127.0.0.1", port=8000)

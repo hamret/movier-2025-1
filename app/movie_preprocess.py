@@ -1,8 +1,8 @@
 import pandas as pd
 
-movies_df = pd.read_csv("app/data/movies.csv")
+movies_df = pd.read_csv("data/movies.csv")
 print(movies_df)
-links_df = pd.read_csv('app/data/links.csv', dtype=str)
+links_df = pd.read_csv('data/links.csv', dtype=str)
 
 movies_df['movieId'] = movies_df['movieId'].astype(str)
 
@@ -16,7 +16,7 @@ def add_url(row):
 merged_df['url'] = merged_df['imdbId'].apply(lambda x:add_url(x))
 print(merged_df)
 
-rating_df = pd.read_csv("app/data/ratings.csv")
+rating_df = pd.read_csv("data/ratings.csv")
 rating_df['movieId'] = rating_df['movieId'].astype(str)
 agg_df = rating_df.groupby('movieId').agg(rcount = ('rating', 'count'), rmean=('rating', 'mean'))
 
